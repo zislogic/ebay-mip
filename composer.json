@@ -1,0 +1,57 @@
+{
+    "name": "zislogic/ebay-mip",
+    "description": "eBay MIP (Merchant Integration Platform) CSV feed integration for Laravel",
+    "keywords": ["laravel", "ebay", "mip", "csv", "sftp"],
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^8.2",
+        "illuminate/contracts": "^12.0",
+        "illuminate/database": "^12.0",
+        "illuminate/support": "^12.0",
+        "phpseclib/phpseclib": "^3.0",
+        "zislogic/ebay-connector": "@dev"
+    },
+    "require-dev": {
+        "larastan/larastan": "^3.0",
+        "mockery/mockery": "^1.6",
+        "orchestra/testbench": "^10.0",
+        "phpstan/phpstan": "^2.1",
+        "phpunit/phpunit": "^11.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Zislogic\\Ebay\\Mip\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Zislogic\\Ebay\\Mip\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Zislogic\\Ebay\\Mip\\EbayMipServiceProvider"
+            ]
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "analyse": "vendor/bin/phpstan analyse --memory-limit=512M"
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../ebay-connector",
+            "options": {
+                "symlink": true
+            }
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "config": {
+        "sort-packages": true
+    }
+}

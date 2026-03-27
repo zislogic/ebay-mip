@@ -7,8 +7,8 @@ namespace Zislogic\Ebay\Mip\Services;
 use Illuminate\Database\Eloquent\Collection;
 use Zislogic\Ebay\Mip\Csv\CsvWriter;
 use Zislogic\Ebay\Mip\Exceptions\MipException;
-use Zislogic\Ebay\Mip\Models\MipOrderLine;
 use Zislogic\Ebay\Mip\Sftp\MipSftpClient;
+use Zislogic\Ebay\Model\Fulfillment\Models\FulfillmentOrderLine;
 
 final class FulfillmentExportService
 {
@@ -30,8 +30,8 @@ final class FulfillmentExportService
      */
     public function export(int $credentialId): array
     {
-        /** @var Collection<int, MipOrderLine> $lines */
-        $lines = MipOrderLine::query()
+        /** @var Collection<int, FulfillmentOrderLine> $lines */
+        $lines = FulfillmentOrderLine::query()
             ->pendingExport()
             ->whereHas('order', function ($query) use ($credentialId): void {
                 $query->where('ebay_credential_id', $credentialId);
@@ -49,7 +49,7 @@ final class FulfillmentExportService
     /**
      * Export specific order lines.
      *
-     * @param Collection<int, MipOrderLine> $lines
+     * @param Collection<int, FulfillmentOrderLine> $lines
      * @return array{filename: string, count: int}
      *
      * @throws MipException
@@ -66,7 +66,7 @@ final class FulfillmentExportService
     /**
      * Build CSV, upload to SFTP, and mark lines as fulfilled.
      *
-     * @param Collection<int, MipOrderLine> $lines
+     * @param Collection<int, FulfillmentOrderLine> $lines
      * @return array{filename: string, count: int}
      *
      * @throws MipException
@@ -114,7 +114,7 @@ final class FulfillmentExportService
 
         // Mark lines as fulfilled
         foreach ($lines as $line) {
-            $line->markFulfilledOnEbay();
+            $line->markFulfilled();
         }
 
         return [

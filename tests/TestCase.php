@@ -8,7 +8,8 @@ use Orchestra\Testbench\TestCase as Orchestra;
 use Zislogic\Ebay\Connector\EbayConnectorServiceProvider;
 use Zislogic\Ebay\Connector\Models\EbayCredential;
 use Zislogic\Ebay\Mip\EbayMipServiceProvider;
-use Zislogic\Ebay\Mip\Models\MipOrder;
+use Zislogic\Ebay\Model\Fulfillment\EbayFulfillmentServiceProvider;
+use Zislogic\Ebay\Model\Fulfillment\Models\FulfillmentOrder;
 
 abstract class TestCase extends Orchestra
 {
@@ -23,6 +24,13 @@ abstract class TestCase extends Orchestra
             $this->loadMigrationsFrom($connectorMigrationsPath);
         }
 
+        // Load fulfillment domain migrations (fulfillment_orders, fulfillment_order_lines)
+        $fulfillmentMigrationsPath = dirname(__DIR__) . '/vendor/zislogic/ebay-model-fulfillment/database/migrations';
+
+        if (is_dir($fulfillmentMigrationsPath)) {
+            $this->loadMigrationsFrom($fulfillmentMigrationsPath);
+        }
+
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
     }
 
@@ -33,6 +41,7 @@ abstract class TestCase extends Orchestra
     {
         return [
             EbayConnectorServiceProvider::class,
+            EbayFulfillmentServiceProvider::class,
             EbayMipServiceProvider::class,
         ];
     }
@@ -74,9 +83,9 @@ abstract class TestCase extends Orchestra
     /**
      * @param array<string, mixed> $attributes
      */
-    protected function createOrder(int $credentialId, array $attributes = []): MipOrder
+    protected function createOrder(int $credentialId, array $attributes = []): FulfillmentOrder
     {
-        return MipOrder::query()->create(array_merge([
+        return FulfillmentOrder::query()->create(array_merge([
             'ebay_credential_id' => $credentialId,
             'order_id' => 'ORD-' . uniqid(),
             'buyer_user_id' => 'buyer-' . uniqid(),

@@ -7,9 +7,9 @@ namespace Zislogic\Ebay\Mip\Services;
 use Illuminate\Support\Facades\Log;
 use Zislogic\Ebay\Mip\Csv\CsvReader;
 use Zislogic\Ebay\Mip\Exceptions\MipException;
-use Zislogic\Ebay\Mip\Models\MipOrder;
-use Zislogic\Ebay\Mip\Models\MipOrderLine;
 use Zislogic\Ebay\Mip\Sftp\MipSftpClient;
+use Zislogic\Ebay\Model\Fulfillment\Models\FulfillmentOrder;
+use Zislogic\Ebay\Model\Fulfillment\Models\FulfillmentOrderLine;
 
 final class OrderImportService
 {
@@ -168,8 +168,8 @@ final class OrderImportService
             $orderData['meta'] = $orderMeta;
         }
 
-        /** @var MipOrder $order */
-        $order = MipOrder::query()->updateOrCreate(
+        /** @var FulfillmentOrder $order */
+        $order = FulfillmentOrder::query()->updateOrCreate(
             [
                 'ebay_credential_id' => $credentialId,
                 'order_id' => $orderId,
@@ -193,9 +193,9 @@ final class OrderImportService
             }
 
             // Preserve fulfillment fields — don't overwrite if already set
-            /** @var MipOrderLine|null $existingLine */
-            $existingLine = MipOrderLine::query()
-                ->where('mip_order_id', $order->id)
+            /** @var FulfillmentOrderLine|null $existingLine */
+            $existingLine = FulfillmentOrderLine::query()
+                ->where('fulfillment_order_id', $order->id)
                 ->where('line_item_id', $lineItemId)
                 ->first();
 
@@ -211,9 +211,9 @@ final class OrderImportService
 
                 $existingLine->update($updateData);
             } else {
-                $lineData['mip_order_id'] = $order->id;
+                $lineData['fulfillment_order_id'] = $order->id;
 
-                MipOrderLine::query()->create($lineData);
+                FulfillmentOrderLine::query()->create($lineData);
             }
         }
     }

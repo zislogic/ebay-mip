@@ -55,4 +55,14 @@ final class MipException extends Exception
     {
         return new self("Required CSV column missing: {$columnName}");
     }
+
+    public static function unknownFeedField(string $fieldKey): self
+    {
+        return new self("Unknown product feed field: '{$fieldKey}'. Check the product_feed config.");
+    }
+
+    public static function feedFieldMaxExceeded(string $fieldKey, int $max): self
+    {
+        return new self("Max count of {$max} exceeded for multi-field: '{$fieldKey}'.");
+    }
 }

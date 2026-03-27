@@ -10,7 +10,9 @@
         "illuminate/database": "^12.0",
         "illuminate/support": "^12.0",
         "phpseclib/phpseclib": "^3.0",
-        "zislogic/ebay-connector": "@dev"
+        "zislogic/ebay-connector": "@dev",
+        "zislogic/ebay-model-fulfillment": "@dev",
+        "zislogic/ebay-model-inventory": "@dev"
     },
     "require-dev": {
         "larastan/larastan": "^3.0",
@@ -44,6 +46,20 @@
         {
             "type": "path",
             "url": "../ebay-connector",
+            "options": {
+                "symlink": true
+            }
+        },
+        {
+            "type": "path",
+            "url": "../ebay-model-fulfillment",
+            "options": {
+                "symlink": true
+            }
+        },
+        {
+            "type": "path",
+            "url": "../ebay-model-inventory",
             "options": {
                 "symlink": true
             }

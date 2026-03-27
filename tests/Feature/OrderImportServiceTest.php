@@ -6,11 +6,11 @@ namespace Zislogic\Ebay\Mip\Tests\Feature;
 
 use PHPUnit\Framework\Attributes\Test;
 use Zislogic\Ebay\Mip\Csv\CsvReader;
-use Zislogic\Ebay\Mip\Models\MipOrder;
-use Zislogic\Ebay\Mip\Models\MipOrderLine;
 use Zislogic\Ebay\Mip\Services\OrderImportService;
 use Zislogic\Ebay\Mip\Sftp\MipSftpClient;
 use Zislogic\Ebay\Mip\Tests\TestCase;
+use Zislogic\Ebay\Model\Fulfillment\Models\FulfillmentOrder;
+use Zislogic\Ebay\Model\Fulfillment\Models\FulfillmentOrderLine;
 
 final class OrderImportServiceTest extends TestCase
 {
@@ -33,18 +33,18 @@ final class OrderImportServiceTest extends TestCase
         // 4 CSV rows → 3 unique orders (ORD-001, ORD-002, ORD-003)
         $this->assertSame(3, $count);
 
-        $this->assertDatabaseHas('mip_orders', [
+        $this->assertDatabaseHas('fulfillment_orders', [
             'ebay_credential_id' => $credential->id,
             'order_id' => 'ORD-001',
             'buyer_user_id' => 'buyer_hans',
         ]);
 
-        $this->assertDatabaseHas('mip_orders', [
+        $this->assertDatabaseHas('fulfillment_orders', [
             'order_id' => 'ORD-002',
             'buyer_user_id' => 'buyer_anna',
         ]);
 
-        $this->assertDatabaseHas('mip_orders', [
+        $this->assertDatabaseHas('fulfillment_orders', [
             'order_id' => 'ORD-003',
             'buyer_user_id' => 'buyer_peter',
         ]);
@@ -65,18 +65,18 @@ final class OrderImportServiceTest extends TestCase
         $service->importFromCsv($csvContent, $credential->id);
 
         // ORD-002 has 2 line items
-        /** @var MipOrder $order2 */
-        $order2 = MipOrder::query()->where('order_id', 'ORD-002')->first();
+        /** @var FulfillmentOrder $order2 */
+        $order2 = FulfillmentOrder::query()->where('order_id', 'ORD-002')->first();
         $this->assertCount(2, $order2->lines);
 
-        $this->assertDatabaseHas('mip_order_lines', [
-            'mip_order_id' => $order2->id,
+        $this->assertDatabaseHas('fulfillment_order_lines', [
+            'fulfillment_order_id' => $order2->id,
             'line_item_id' => 'LI-002-1',
             'sku' => 'TOW-AUDI-Q7',
         ]);
 
-        $this->assertDatabaseHas('mip_order_lines', [
-            'mip_order_id' => $order2->id,
+        $this->assertDatabaseHas('fulfillment_order_lines', [
+            'fulfillment_order_id' => $order2->id,
             'line_item_id' => 'LI-002-2',
             'sku' => 'WIR-AUDI-Q7',
         ]);
@@ -96,8 +96,8 @@ final class OrderImportServiceTest extends TestCase
 
         $service->importFromCsv($csvContent, $credential->id);
 
-        /** @var MipOrder $order */
-        $order = MipOrder::query()->where('order_id', 'ORD-001')->first();
+        /** @var FulfillmentOrder $order */
+        $order = FulfillmentOrder::query()->where('order_id', 'ORD-001')->first();
 
         $this->assertSame('buyer_hans', $order->buyer_user_id);
         $this->assertSame('hans@example.de', $order->buyer_email);
@@ -113,7 +113,7 @@ final class OrderImportServiceTest extends TestCase
         $this->assertSame('DE', $order->ship_to_country);
 
         // Line item
-        /** @var MipOrderLine $line */
+        /** @var FulfillmentOrderLine $line */
         $line = $order->lines->first();
         $this->assertSame('LI-001-1', $line->line_item_id);
         $this->assertSame('ITEM001', $line->item_id);
@@ -137,8 +137,8 @@ final class OrderImportServiceTest extends TestCase
 
         $service->importFromCsv($csvContent, $credential->id);
 
-        /** @var MipOrder $order */
-        $order = MipOrder::query()->where('order_id', 'ORD-001')->first();
+        /** @var FulfillmentOrder $order */
+        $order = FulfillmentOrder::query()->where('order_id', 'ORD-001')->first();
 
         $this->assertNotNull($order->meta);
         $this->assertIsArray($order->meta);
@@ -165,11 +165,11 @@ final class OrderImportServiceTest extends TestCase
         $service->importFromCsv($csvContent, $credential->id);
 
         // Should still be 3 orders, not 6
-        $this->assertSame(3, MipOrder::query()->count());
+        $this->assertSame(3, FulfillmentOrder::query()->count());
 
         // ORD-002 should still have 2 lines, not 4
-        /** @var MipOrder $order2 */
-        $order2 = MipOrder::query()->where('order_id', 'ORD-002')->first();
+        /** @var FulfillmentOrder $order2 */
+        $order2 = FulfillmentOrder::query()->where('order_id', 'ORD-002')->first();
         $this->assertCount(2, $order2->lines);
     }
 
@@ -189,10 +189,10 @@ final class OrderImportServiceTest extends TestCase
         $service->importFromCsv($csvContent, $credential->id);
 
         // Simulate plugin marking a line as shipped
-        /** @var MipOrder $order */
-        $order = MipOrder::query()->where('order_id', 'ORD-001')->first();
+        /** @var FulfillmentOrder $order */
+        $order = FulfillmentOrder::query()->where('order_id', 'ORD-001')->first();
 
-        /** @var MipOrderLine $line */
+        /** @var FulfillmentOrderLine $line */
         $line = $order->lines->first();
         $line->markShipped('DHL', 'TRACK123');
 

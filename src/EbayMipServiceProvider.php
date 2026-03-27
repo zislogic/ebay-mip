@@ -6,6 +6,8 @@ namespace Zislogic\Ebay\Mip;
 
 use Illuminate\Support\ServiceProvider;
 use Zislogic\Ebay\Mip\Commands\ExportFulfillmentCommand;
+use Zislogic\Ebay\Mip\Commands\ExportInventoryFeedCommand;
+use Zislogic\Ebay\Mip\Commands\ExportProductFeedCommand;
 use Zislogic\Ebay\Mip\Commands\ImportOrdersCommand;
 
 final class EbayMipServiceProvider extends ServiceProvider
@@ -31,6 +33,8 @@ final class EbayMipServiceProvider extends ServiceProvider
             $this->commands([
                 ImportOrdersCommand::class,
                 ExportFulfillmentCommand::class,
+                ExportProductFeedCommand::class,
+                ExportInventoryFeedCommand::class,
             ]);
         }
     }

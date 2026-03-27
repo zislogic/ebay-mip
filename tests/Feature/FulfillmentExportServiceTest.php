@@ -7,10 +7,10 @@ namespace Zislogic\Ebay\Mip\Tests\Feature;
 use Mockery;
 use PHPUnit\Framework\Attributes\Test;
 use Zislogic\Ebay\Mip\Csv\CsvWriter;
-use Zislogic\Ebay\Mip\Models\MipOrderLine;
 use Zislogic\Ebay\Mip\Services\FulfillmentExportService;
 use Zislogic\Ebay\Mip\Sftp\MipSftpClient;
 use Zislogic\Ebay\Mip\Tests\TestCase;
+use Zislogic\Ebay\Model\Fulfillment\Models\FulfillmentOrderLine;
 
 final class FulfillmentExportServiceTest extends TestCase
 {
@@ -20,8 +20,8 @@ final class FulfillmentExportServiceTest extends TestCase
         $credential = $this->createCredential();
         $order = $this->createOrder($credential->id, ['order_id' => 'ORD-001']);
 
-        MipOrderLine::query()->create([
-            'mip_order_id' => $order->id,
+        FulfillmentOrderLine::query()->create([
+            'fulfillment_order_id' => $order->id,
             'line_item_id' => 'LI-001',
             'item_id' => 'ITEM001',
             'title' => 'Test Product',
@@ -69,8 +69,8 @@ final class FulfillmentExportServiceTest extends TestCase
         $credential = $this->createCredential();
         $order = $this->createOrder($credential->id);
 
-        $line = MipOrderLine::query()->create([
-            'mip_order_id' => $order->id,
+        $line = FulfillmentOrderLine::query()->create([
+            'fulfillment_order_id' => $order->id,
             'line_item_id' => 'LI-001',
             'item_id' => 'ITEM001',
             'title' => 'Test',
@@ -101,8 +101,8 @@ final class FulfillmentExportServiceTest extends TestCase
         $order = $this->createOrder($credential->id);
 
         // Already fulfilled
-        MipOrderLine::query()->create([
-            'mip_order_id' => $order->id,
+        FulfillmentOrderLine::query()->create([
+            'fulfillment_order_id' => $order->id,
             'line_item_id' => 'LI-001',
             'item_id' => 'ITEM001',
             'title' => 'Already Done',
@@ -130,8 +130,8 @@ final class FulfillmentExportServiceTest extends TestCase
         $credential = $this->createCredential();
         $order = $this->createOrder($credential->id);
 
-        MipOrderLine::query()->create([
-            'mip_order_id' => $order->id,
+        FulfillmentOrderLine::query()->create([
+            'fulfillment_order_id' => $order->id,
             'line_item_id' => 'LI-001',
             'item_id' => 'ITEM001',
             'title' => 'Not Shipped Yet',
@@ -159,8 +159,8 @@ final class FulfillmentExportServiceTest extends TestCase
         $order1 = $this->createOrder($credential->id, ['order_id' => 'ORD-001']);
         $order2 = $this->createOrder($credential->id, ['order_id' => 'ORD-002']);
 
-        MipOrderLine::query()->create([
-            'mip_order_id' => $order1->id,
+        FulfillmentOrderLine::query()->create([
+            'fulfillment_order_id' => $order1->id,
             'line_item_id' => 'LI-001',
             'item_id' => 'ITEM001',
             'title' => 'Product 1',
@@ -171,8 +171,8 @@ final class FulfillmentExportServiceTest extends TestCase
             'tracking_number' => 'TRACK001',
         ]);
 
-        MipOrderLine::query()->create([
-            'mip_order_id' => $order2->id,
+        FulfillmentOrderLine::query()->create([
+            'fulfillment_order_id' => $order2->id,
             'line_item_id' => 'LI-002',
             'item_id' => 'ITEM002',
             'title' => 'Product 2',

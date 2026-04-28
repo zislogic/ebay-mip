@@ -13,7 +13,7 @@ use Zislogic\Ebay\Model\Fulfillment\Models\FulfillmentOrderLine;
 final class FulfillmentExportService
 {
     /**
-     * @param array<string, mixed> $config
+     * @param  array<string, mixed>  $config
      */
     public function __construct(
         private readonly MipSftpClient $sftp,
@@ -49,7 +49,7 @@ final class FulfillmentExportService
     /**
      * Export specific order lines.
      *
-     * @param Collection<int, FulfillmentOrderLine> $lines
+     * @param  Collection<int, FulfillmentOrderLine>  $lines
      * @return array{filename: string, count: int}
      *
      * @throws MipException
@@ -66,7 +66,7 @@ final class FulfillmentExportService
     /**
      * Build CSV, upload to SFTP, and mark lines as fulfilled.
      *
-     * @param Collection<int, FulfillmentOrderLine> $lines
+     * @param  Collection<int, FulfillmentOrderLine>  $lines
      * @return array{filename: string, count: int}
      *
      * @throws MipException
@@ -102,13 +102,13 @@ final class FulfillmentExportService
 
         $csvContent = $this->csvWriter->generate($headers, $rows);
 
-        $filename = 'fulfillment_' . date('Ymd_His') . '.csv';
+        $filename = 'fulfillment_'.date('Ymd_His').'.csv';
 
         /** @var array<string, string> $paths */
         $paths = $this->config['paths'] ?? [];
         $fulfillmentPath = (string) ($paths['order_fulfillment'] ?? '/store/order-fulfillment');
 
-        $remotePath = $fulfillmentPath . '/' . $filename;
+        $remotePath = $fulfillmentPath.'/'.$filename;
 
         $this->sftp->uploadFile($remotePath, $csvContent);
 

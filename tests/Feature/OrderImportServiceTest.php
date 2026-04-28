@@ -24,7 +24,7 @@ final class OrderImportServiceTest extends TestCase
         $config = config('ebay-mip');
 
         $sftp = \Mockery::mock(MipSftpClient::class);
-        $csvReader = new CsvReader();
+        $csvReader = new CsvReader;
 
         $service = new OrderImportService($sftp, $csvReader, $config);
 
@@ -60,7 +60,7 @@ final class OrderImportServiceTest extends TestCase
         $config = config('ebay-mip');
 
         $sftp = \Mockery::mock(MipSftpClient::class);
-        $service = new OrderImportService($sftp, new CsvReader(), $config);
+        $service = new OrderImportService($sftp, new CsvReader, $config);
 
         $service->importFromCsv($csvContent, $credential->id);
 
@@ -92,7 +92,7 @@ final class OrderImportServiceTest extends TestCase
         $config = config('ebay-mip');
 
         $sftp = \Mockery::mock(MipSftpClient::class);
-        $service = new OrderImportService($sftp, new CsvReader(), $config);
+        $service = new OrderImportService($sftp, new CsvReader, $config);
 
         $service->importFromCsv($csvContent, $credential->id);
 
@@ -133,7 +133,7 @@ final class OrderImportServiceTest extends TestCase
         $config = config('ebay-mip');
 
         $sftp = \Mockery::mock(MipSftpClient::class);
-        $service = new OrderImportService($sftp, new CsvReader(), $config);
+        $service = new OrderImportService($sftp, new CsvReader, $config);
 
         $service->importFromCsv($csvContent, $credential->id);
 
@@ -158,7 +158,7 @@ final class OrderImportServiceTest extends TestCase
         $config = config('ebay-mip');
 
         $sftp = \Mockery::mock(MipSftpClient::class);
-        $service = new OrderImportService($sftp, new CsvReader(), $config);
+        $service = new OrderImportService($sftp, new CsvReader, $config);
 
         // Import twice
         $service->importFromCsv($csvContent, $credential->id);
@@ -183,7 +183,7 @@ final class OrderImportServiceTest extends TestCase
         $config = config('ebay-mip');
 
         $sftp = \Mockery::mock(MipSftpClient::class);
-        $service = new OrderImportService($sftp, new CsvReader(), $config);
+        $service = new OrderImportService($sftp, new CsvReader, $config);
 
         // First import
         $service->importFromCsv($csvContent, $credential->id);
@@ -216,7 +216,7 @@ final class OrderImportServiceTest extends TestCase
         $config = config('ebay-mip');
 
         $sftp = \Mockery::mock(MipSftpClient::class);
-        $service = new OrderImportService($sftp, new CsvReader(), $config);
+        $service = new OrderImportService($sftp, new CsvReader, $config);
 
         $count = $service->importFromCsv('', $credential->id);
 

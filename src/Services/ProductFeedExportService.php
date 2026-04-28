@@ -14,7 +14,7 @@ use Zislogic\Ebay\Model\Inventory\Models\InventoryItem;
 final class ProductFeedExportService
 {
     /**
-     * @param array<string, mixed> $config
+     * @param  array<string, mixed>  $config
      */
     public function __construct(
         private readonly MipSftpClient $sftp,
@@ -65,7 +65,7 @@ final class ProductFeedExportService
     /**
      * Export specific inventory items.
      *
-     * @param Collection<int, InventoryItem> $items
+     * @param  Collection<int, InventoryItem>  $items
      * @return array{filename: string, count: int}
      *
      * @throws MipException
@@ -82,7 +82,7 @@ final class ProductFeedExportService
     }
 
     /**
-     * @param Collection<int, InventoryItem> $items
+     * @param  Collection<int, InventoryItem>  $items
      * @return array{filename: string, count: int}
      *
      * @throws MipException
@@ -98,11 +98,11 @@ final class ProductFeedExportService
         }
 
         $csvContent = $builder->build();
-        $filename = 'product-combined_' . date('Ymd_His') . '.csv';
+        $filename = 'product-combined_'.date('Ymd_His').'.csv';
 
         /** @var array<string, string> $paths */
         $paths = $this->config['paths'] ?? [];
-        $remotePath = ($paths['product_feed'] ?? '/store/listing/product-combined') . '/' . $filename;
+        $remotePath = ($paths['product_feed'] ?? '/store/listing/product-combined').'/'.$filename;
 
         $this->sftp->uploadFile($remotePath, $csvContent);
 
@@ -183,7 +183,7 @@ final class ProductFeedExportService
 
         // KTypes → Compatible Products
         foreach ($item->ktypes as $ktype) {
-            $builder->setValue('compatible_product', 'KType=' . $ktype->ktype);
+            $builder->setValue('compatible_product', 'KType='.$ktype->ktype);
         }
 
         // Offer-level fields (use first offer for the item's primary marketplace)
@@ -218,7 +218,7 @@ final class ProductFeedExportService
             // EPR
             if ($offer->epr !== null) {
                 $builder->setValue('ecoparticipationfee', $offer->epr->eco_participation_fee_value !== null
-                    ? $offer->epr->eco_participation_fee_value . ' ' . $offer->epr->eco_participation_fee_currency
+                    ? $offer->epr->eco_participation_fee_value.' '.$offer->epr->eco_participation_fee_currency
                     : null
                 );
             }

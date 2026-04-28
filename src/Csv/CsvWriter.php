@@ -9,8 +9,8 @@ final class CsvWriter
     /**
      * Generate a CSV string from headers and rows.
      *
-     * @param array<int, string> $headers
-     * @param array<int, array<int, string>> $rows
+     * @param  array<int, string>  $headers
+     * @param  array<int, array<int, string>>  $rows
      */
     public function generate(array $headers, array $rows): string
     {

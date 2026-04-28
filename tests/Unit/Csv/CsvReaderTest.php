@@ -7,7 +7,6 @@ namespace Zislogic\Ebay\Mip\Tests\Unit\Csv;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Zislogic\Ebay\Mip\Csv\CsvReader;
-use Zislogic\Ebay\Mip\Exceptions\MipException;
 
 final class CsvReaderTest extends TestCase
 {
@@ -16,7 +15,7 @@ final class CsvReaderTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->reader = new CsvReader();
+        $this->reader = new CsvReader;
     }
 
     #[Test]

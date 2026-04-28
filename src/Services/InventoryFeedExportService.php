@@ -21,7 +21,7 @@ final class InventoryFeedExportService
     ];
 
     /**
-     * @param array<string, mixed> $config
+     * @param  array<string, mixed>  $config
      */
     public function __construct(
         private readonly MipSftpClient $sftp,
@@ -54,7 +54,7 @@ final class InventoryFeedExportService
     /**
      * Export specific inventory items.
      *
-     * @param Collection<int, InventoryItem> $items
+     * @param  Collection<int, InventoryItem>  $items
      * @return array{filename: string, count: int}
      *
      * @throws MipException
@@ -71,7 +71,7 @@ final class InventoryFeedExportService
     }
 
     /**
-     * @param Collection<int, InventoryItem> $items
+     * @param  Collection<int, InventoryItem>  $items
      * @return array{filename: string, count: int}
      *
      * @throws MipException
@@ -96,11 +96,11 @@ final class InventoryFeedExportService
         }
 
         $csvContent = $this->csvWriter->generate(self::HEADERS, $rows);
-        $filename = 'product-inventory_' . date('Ymd_His') . '.csv';
+        $filename = 'product-inventory_'.date('Ymd_His').'.csv';
 
         /** @var array<string, string> $paths */
         $paths = $this->config['paths'] ?? [];
-        $remotePath = ($paths['inventory_feed'] ?? '/store/listing/product-inventory') . '/' . $filename;
+        $remotePath = ($paths['inventory_feed'] ?? '/store/listing/product-inventory').'/'.$filename;
 
         $this->sftp->uploadFile($remotePath, $csvContent);
 

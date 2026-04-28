@@ -49,7 +49,7 @@ final class ExportProductFeedCommand extends Command
 
             return self::SUCCESS;
         } catch (\Throwable $e) {
-            $this->error('Export failed: ' . $e->getMessage());
+            $this->error('Export failed: '.$e->getMessage());
 
             return self::FAILURE;
         }

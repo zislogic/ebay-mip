@@ -18,20 +18,20 @@ abstract class TestCase extends Orchestra
         parent::setUp();
 
         // Load ebay-connector migrations first (for ebay_credentials table)
-        $connectorMigrationsPath = dirname(__DIR__) . '/vendor/zislogic/ebay-connector/database/migrations';
+        $connectorMigrationsPath = dirname(__DIR__).'/vendor/zislogic/ebay-connector/database/migrations';
 
         if (is_dir($connectorMigrationsPath)) {
             $this->loadMigrationsFrom($connectorMigrationsPath);
         }
 
         // Load fulfillment domain migrations (fulfillment_orders, fulfillment_order_lines)
-        $fulfillmentMigrationsPath = dirname(__DIR__) . '/vendor/zislogic/ebay-model-fulfillment/database/migrations';
+        $fulfillmentMigrationsPath = dirname(__DIR__).'/vendor/zislogic/ebay-model-fulfillment/database/migrations';
 
         if (is_dir($fulfillmentMigrationsPath)) {
             $this->loadMigrationsFrom($fulfillmentMigrationsPath);
         }
 
-        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
     }
 
     /**
@@ -66,29 +66,29 @@ abstract class TestCase extends Orchestra
     }
 
     /**
-     * @param array<string, mixed> $attributes
+     * @param  array<string, mixed>  $attributes
      */
     protected function createCredential(array $attributes = []): EbayCredential
     {
         return EbayCredential::query()->create(array_merge([
             'name' => 'Test Seller',
             'environment' => 'sandbox',
-            'ebay_user_id' => 'test-seller-' . uniqid(),
-            'refresh_token' => 'test-refresh-token-' . uniqid(),
+            'ebay_user_id' => 'test-seller-'.uniqid(),
+            'refresh_token' => 'test-refresh-token-'.uniqid(),
             'refresh_token_expires_at' => now()->addDays(30),
             'is_active' => true,
         ], $attributes));
     }
 
     /**
-     * @param array<string, mixed> $attributes
+     * @param  array<string, mixed>  $attributes
      */
     protected function createOrder(int $credentialId, array $attributes = []): FulfillmentOrder
     {
         return FulfillmentOrder::query()->create(array_merge([
             'ebay_credential_id' => $credentialId,
-            'order_id' => 'ORD-' . uniqid(),
-            'buyer_user_id' => 'buyer-' . uniqid(),
+            'order_id' => 'ORD-'.uniqid(),
+            'buyer_user_id' => 'buyer-'.uniqid(),
             'buyer_email' => 'buyer@example.com',
             'buyer_name' => 'Test Buyer',
             'order_status' => 'NOT_STARTED',
@@ -107,7 +107,7 @@ abstract class TestCase extends Orchestra
 
     protected function getFixturePath(string $filename): string
     {
-        return __DIR__ . '/fixtures/' . $filename;
+        return __DIR__.'/fixtures/'.$filename;
     }
 
     protected function getFixtureContent(string $filename): string

@@ -38,7 +38,7 @@ final class ImportOrdersCommand extends Command
             $config = config('ebay-mip');
 
             $sftp = MipSftpClient::fromCredential($credentialId, $config, $tokenManager);
-            $csvReader = new CsvReader();
+            $csvReader = new CsvReader;
 
             $service = new OrderImportService($sftp, $csvReader, $config);
 
@@ -56,7 +56,7 @@ final class ImportOrdersCommand extends Command
 
             return self::SUCCESS;
         } catch (\Throwable $e) {
-            $this->error('Import failed: ' . $e->getMessage());
+            $this->error('Import failed: '.$e->getMessage());
 
             return self::FAILURE;
         }

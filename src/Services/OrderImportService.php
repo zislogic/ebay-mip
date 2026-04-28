@@ -14,7 +14,7 @@ use Zislogic\Ebay\Model\Fulfillment\Models\FulfillmentOrderLine;
 final class OrderImportService
 {
     /**
-     * @param array<string, mixed> $config
+     * @param  array<string, mixed>  $config
      */
     public function __construct(
         private readonly MipSftpClient $sftp,
@@ -62,7 +62,7 @@ final class OrderImportService
      */
     public function importReport(string $filename, int $credentialId, string $type = 'latest'): int
     {
-        $path = $this->getReportPath($type) . '/' . $filename;
+        $path = $this->getReportPath($type).'/'.$filename;
 
         $csvContent = $this->sftp->downloadFile($path);
         $rows = $this->csvReader->parse($csvContent);
@@ -93,7 +93,7 @@ final class OrderImportService
     /**
      * Process parsed CSV rows: group by orderID, upsert orders and lines.
      *
-     * @param array<int, array<string, string>> $rows
+     * @param  array<int, array<string, string>>  $rows
      */
     private function processRows(array $rows, int $credentialId): int
     {
@@ -144,9 +144,9 @@ final class OrderImportService
     /**
      * Upsert a single order and its line items.
      *
-     * @param array<int, array<string, string>> $orderRows
-     * @param array<string, string> $orderColumnMap
-     * @param array<string, string> $lineColumnMap
+     * @param  array<int, array<string, string>>  $orderRows
+     * @param  array<string, string>  $orderColumnMap
+     * @param  array<string, string>  $lineColumnMap
      */
     private function upsertOrder(
         string $orderId,
@@ -221,8 +221,8 @@ final class OrderImportService
     /**
      * Map CSV columns to DB columns using the column map config.
      *
-     * @param array<string, string> $row
-     * @param array<string, string> $columnMap
+     * @param  array<string, string>  $row
+     * @param  array<string, string>  $columnMap
      * @return array<string, string>
      */
     private function mapColumns(array $row, array $columnMap): array
@@ -241,9 +241,9 @@ final class OrderImportService
     /**
      * Collect unmapped order-level CSV columns into meta array.
      *
-     * @param array<string, string> $row
-     * @param array<string, string> $orderColumnMap
-     * @param array<string, string> $lineColumnMap
+     * @param  array<string, string>  $row
+     * @param  array<string, string>  $orderColumnMap
+     * @param  array<string, string>  $lineColumnMap
      * @return array<string, string>
      */
     private function collectMeta(array $row, array $orderColumnMap, array $lineColumnMap): array
@@ -271,8 +271,8 @@ final class OrderImportService
     /**
      * Collect unmapped line-level CSV columns into meta array.
      *
-     * @param array<string, string> $row
-     * @param array<string, string> $lineColumnMap
+     * @param  array<string, string>  $row
+     * @param  array<string, string>  $lineColumnMap
      * @return array<string, string>
      */
     private function collectLineMeta(array $row, array $lineColumnMap): array

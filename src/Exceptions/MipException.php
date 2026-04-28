@@ -13,7 +13,7 @@ final class MipException extends Exception
         $message = "Failed to connect to MIP SFTP server at {$host}";
 
         if ($detail !== '') {
-            $message .= ': ' . $detail;
+            $message .= ': '.$detail;
         }
 
         return new self($message);
@@ -29,7 +29,7 @@ final class MipException extends Exception
         $message = "SFTP transfer failed for path: {$path}";
 
         if ($detail !== '') {
-            $message .= ': ' . $detail;
+            $message .= ': '.$detail;
         }
 
         return new self($message);
@@ -45,7 +45,7 @@ final class MipException extends Exception
         $message = 'Invalid CSV format';
 
         if ($detail !== '') {
-            $message .= ': ' . $detail;
+            $message .= ': '.$detail;
         }
 
         return new self($message);

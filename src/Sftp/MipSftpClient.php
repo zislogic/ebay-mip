@@ -23,7 +23,7 @@ class MipSftpClient
     /**
      * Create an SFTP client from an eBay credential.
      *
-     * @param array<string, mixed> $config
+     * @param  array<string, mixed>  $config
      *
      * @throws MipException
      */

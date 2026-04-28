@@ -10,6 +10,8 @@ use Zislogic\Ebay\Connector\Models\EbayCredential;
 
 final class MipFeed extends Model
 {
+    protected $table = 'mip_feeds';
+
     protected $fillable = [
         'ebay_credential_id',
         'feed_type',

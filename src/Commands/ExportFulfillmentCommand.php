@@ -34,7 +34,7 @@ final class ExportFulfillmentCommand extends Command
             $config = config('ebay-mip');
 
             $sftp = MipSftpClient::fromCredential($credentialId, $config, $tokenManager);
-            $csvWriter = new CsvWriter();
+            $csvWriter = new CsvWriter;
 
             $service = new FulfillmentExportService($sftp, $csvWriter, $config);
 
@@ -52,7 +52,7 @@ final class ExportFulfillmentCommand extends Command
 
             return self::SUCCESS;
         } catch (\Throwable $e) {
-            $this->error('Export failed: ' . $e->getMessage());
+            $this->error('Export failed: '.$e->getMessage());
 
             return self::FAILURE;
         }

@@ -6,6 +6,7 @@ namespace Zislogic\Ebay\Mip\Tests\Unit\Csv;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use Zislogic\Ebay\Mip\Csv\CsvReader;
 use Zislogic\Ebay\Mip\Csv\CsvWriter;
 
 final class CsvWriterTest extends TestCase
@@ -15,7 +16,7 @@ final class CsvWriterTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->writer = new CsvWriter();
+        $this->writer = new CsvWriter;
     }
 
     #[Test]
@@ -61,7 +62,7 @@ final class CsvWriterTest extends TestCase
     #[Test]
     public function it_roundtrips_with_csv_reader(): void
     {
-        $reader = new \Zislogic\Ebay\Mip\Csv\CsvReader();
+        $reader = new CsvReader;
         $headers = ['Order ID', 'Carrier', 'Tracking'];
         $rows = [
             ['ORD-001', 'DHL', 'TRACK123'],

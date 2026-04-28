@@ -45,7 +45,7 @@ final class FulfillmentExportServiceTest extends TestCase
                 $uploadedContent = $content;
             });
 
-        $service = new FulfillmentExportService($sftp, new CsvWriter(), $config);
+        $service = new FulfillmentExportService($sftp, new CsvWriter, $config);
 
         $result = $service->export($credential->id);
 
@@ -87,7 +87,7 @@ final class FulfillmentExportServiceTest extends TestCase
         $sftp = Mockery::mock(MipSftpClient::class);
         $sftp->shouldReceive('uploadFile')->once();
 
-        $service = new FulfillmentExportService($sftp, new CsvWriter(), $config);
+        $service = new FulfillmentExportService($sftp, new CsvWriter, $config);
         $service->export($credential->id);
 
         $line->refresh();
@@ -118,7 +118,7 @@ final class FulfillmentExportServiceTest extends TestCase
         $sftp = Mockery::mock(MipSftpClient::class);
         $sftp->shouldNotReceive('uploadFile');
 
-        $service = new FulfillmentExportService($sftp, new CsvWriter(), $config);
+        $service = new FulfillmentExportService($sftp, new CsvWriter, $config);
         $result = $service->export($credential->id);
 
         $this->assertSame(0, $result['count']);
@@ -145,7 +145,7 @@ final class FulfillmentExportServiceTest extends TestCase
         $sftp = Mockery::mock(MipSftpClient::class);
         $sftp->shouldNotReceive('uploadFile');
 
-        $service = new FulfillmentExportService($sftp, new CsvWriter(), $config);
+        $service = new FulfillmentExportService($sftp, new CsvWriter, $config);
         $result = $service->export($credential->id);
 
         $this->assertSame(0, $result['count']);
@@ -189,7 +189,7 @@ final class FulfillmentExportServiceTest extends TestCase
         $sftp = Mockery::mock(MipSftpClient::class);
         $sftp->shouldReceive('uploadFile')->once();
 
-        $service = new FulfillmentExportService($sftp, new CsvWriter(), $config);
+        $service = new FulfillmentExportService($sftp, new CsvWriter, $config);
         $result = $service->export($credential->id);
 
         $this->assertSame(2, $result['count']);

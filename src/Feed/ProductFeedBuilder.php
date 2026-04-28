@@ -40,7 +40,7 @@ final class ProductFeedBuilder
     private array $currentRow = [];
 
     /**
-     * @param array<string, mixed> $config  The product_feed config array with SingleFields/MultiFields
+     * @param  array<string, mixed>  $config  The product_feed config array with SingleFields/MultiFields
      */
     public function __construct(private readonly array $config)
     {
@@ -53,7 +53,7 @@ final class ProductFeedBuilder
      * For multi-fields (e.g. 'attribute_name'), each call auto-increments the counter.
      * Array values are pipe-joined: ['Red', 'Blue'] → 'Red|Blue'.
      *
-     * @param string|array<int, string>|null $value
+     * @param  string|array<int, string>|null  $value
      *
      * @throws MipException
      */
@@ -61,6 +61,7 @@ final class ProductFeedBuilder
     {
         if (isset($this->multiFields[$fieldKey])) {
             $this->setMultiValue($fieldKey, $value);
+
             return;
         }
 
@@ -68,6 +69,7 @@ final class ProductFeedBuilder
             $column = $this->singleFields[$fieldKey]['header'];
             $this->seenColumns[$fieldKey] = $column;
             $this->currentRow[$fieldKey] = $this->flatten($value);
+
             return;
         }
 
@@ -102,7 +104,7 @@ final class ProductFeedBuilder
             $rows[] = $csvRow;
         }
 
-        return (new CsvWriter())->generate($headers, $rows);
+        return (new CsvWriter)->generate($headers, $rows);
     }
 
     /**
@@ -152,7 +154,7 @@ final class ProductFeedBuilder
             throw MipException::feedFieldMaxExceeded($fieldKey, $field['max']);
         }
 
-        $numberedKey = $fieldKey . '_' . $field['counter'];
+        $numberedKey = $fieldKey.'_'.$field['counter'];
         $header = sprintf($field['header'], $field['counter']);
 
         $this->seenColumns[$numberedKey] = $header;
@@ -164,7 +166,7 @@ final class ProductFeedBuilder
     /**
      * Order columns: single fields first (by index), then multi-fields grouped by type.
      *
-     * @return array<string, string>  fieldKey => header label
+     * @return array<string, string> fieldKey => header label
      */
     private function orderColumns(): array
     {
@@ -180,6 +182,7 @@ final class ProductFeedBuilder
                 $baseKey = implode('_', array_slice($parts, 0, -1));
                 if (isset($this->multiFields[$baseKey])) {
                     $multis[$baseKey][$key] = $header;
+
                     continue;
                 }
             }
@@ -199,12 +202,13 @@ final class ProductFeedBuilder
 
         // Append multi-fields grouped by type, sorted numerically within each group
         foreach ($this->multiFields as $baseKey => $definition) {
-            if (!isset($multis[$baseKey])) {
+            if (! isset($multis[$baseKey])) {
                 continue;
             }
             uksort($multis[$baseKey], static function (string $a, string $b): int {
                 $numA = (int) substr((string) strrchr($a, '_'), 1);
                 $numB = (int) substr((string) strrchr($b, '_'), 1);
+
                 return $numA <=> $numB;
             });
             foreach ($multis[$baseKey] as $k => $h) {

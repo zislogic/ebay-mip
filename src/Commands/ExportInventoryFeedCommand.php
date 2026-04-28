@@ -34,7 +34,7 @@ final class ExportInventoryFeedCommand extends Command
             $config = config('ebay-mip');
 
             $sftp = MipSftpClient::fromCredential($credentialId, $config, $tokenManager);
-            $service = new InventoryFeedExportService($sftp, new CsvWriter(), $config);
+            $service = new InventoryFeedExportService($sftp, new CsvWriter, $config);
 
             $result = $service->export($credentialId);
 
@@ -50,7 +50,7 @@ final class ExportInventoryFeedCommand extends Command
 
             return self::SUCCESS;
         } catch (\Throwable $e) {
-            $this->error('Export failed: ' . $e->getMessage());
+            $this->error('Export failed: '.$e->getMessage());
 
             return self::FAILURE;
         }
